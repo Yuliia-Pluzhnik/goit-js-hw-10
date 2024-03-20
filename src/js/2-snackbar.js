@@ -15,8 +15,22 @@ const form = document.querySelector('.form');
 form.addEventListener('submit', function (event) {
   event.preventDefault();
 
-  const delay = parseInt(this.elements.delay.value);
-  const state = this.elements.state.value;
+const delay = parseInt(this.elements.delay.value);
+let state;
+
+const stateRadios = this.elements.state;
+  
+for (let i = 0; i < stateRadios.length; i++) {
+    if (stateRadios[i].checked) {
+      state = stateRadios[i].value;
+      break;
+    }
+  }
+
+  if (state === undefined) {
+    state = 'fulfilled'; 
+  }
+
 
   createPromise(delay, state)
     .then(result => {

@@ -12,11 +12,9 @@ const refs = {
   secondsEl: document.querySelector('.value[data-seconds]'),
 };
 
-// Змінна для збереження обраної дати та часу
 let selectedDate = null;
-let timerInterval = null; // Додана змінна для збереження інтервалу таймера
+let timerInterval = null; 
 
-// Налаштування для flatpickr
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -25,7 +23,6 @@ const options = {
   onClose(selectedDates) {
     selectedDate = selectedDates[0];
 
-    // Отримуємо поточну дату
     const currentDate = new Date();
     if (selectedDate.getTime() <= currentDate.getTime()) {
       refs.startBtn.disabled = true;
@@ -39,22 +36,19 @@ const options = {
       iziToast.success({
         title: 'OK!',
         message: 'You can press Start!',
-        position: 'center',
+        position: 'topRight',
       });
     }
   },
 };
 
-// Ініціалізація flatpickr
 flatpickr(refs.datetimePicker, options);
 
 const timer = {
-  // timerInterval: null,
   start() {
     if (!selectedDate || timerInterval) {
       return;
     }
-    // Блокуємо інпут при старті таймера
     refs.datetimePicker.disabled = true;
 
     timerInterval = setInterval(() => {
@@ -63,9 +57,7 @@ const timer = {
 
       if (deltaTime <= 0) {
         clearInterval(timerInterval);
-        timerInterval = null; // Скидаємо змінну після завершення таймера
         updateTimer({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        // Розблоковуємо інпут і кнопку після закінчення таймера
         refs.datetimePicker.disabled = false;
         refs.startBtn.disabled = false;
       } else {
