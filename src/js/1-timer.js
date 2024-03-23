@@ -24,6 +24,7 @@ const options = {
     selectedDate = selectedDates[0];
 
     const currentDate = new Date();
+
     if (selectedDate.getTime() <= currentDate.getTime()) {
       refs.startBtn.disabled = true;
       iziToast.error({
@@ -49,7 +50,7 @@ const timer = {
     if (!selectedDate || timerInterval) {
       return;
     }
-    refs.datetimePicker.disabled = true;
+    disableDateTimePicker();
 
     timerInterval = setInterval(() => {
       const currentTime = Date.now();
@@ -58,22 +59,45 @@ const timer = {
       if (deltaTime <= 0) {
         clearInterval(timerInterval);
         updateTimer({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-        refs.datetimePicker.disabled = false;
-        refs.startBtn.disabled = false;
+        enableDateTimePicker();
+        enableStartButton();
       } else {
         const timeComponents = convertMs(deltaTime);
         updateTimer(timeComponents);
       }
     }, 1000);
   },
+
+  stop() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
 };
 
+
 refs.startBtn.addEventListener('click', () => {
-  refs.startBtn.disabled = true;
   if (selectedDate) {
+    disableStartButton();
     timer.start();
   }
 });
+
+function disableDateTimePicker() {
+  refs.datetimePicker.disabled = true;
+}
+
+function enableDateTimePicker() {
+  refs.datetimePicker.disabled = false;
+}
+
+function disableStartButton() {
+  refs.startBtn.disabled = true;
+}
+
+function enableStartButton() {
+  refs.startBtn.disabled = false;
+}
+
 
 function convertMs(ms) {
   const second = 1000;

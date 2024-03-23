@@ -15,10 +15,11 @@ const form = document.querySelector('.form');
 form.addEventListener('submit', function (event) {
   event.preventDefault();
 
-const delay = parseInt(this.elements.delay.value);
-let state;
+  const delay = parseInt(this.elements.delay.value);
+  const stateRadios = this.elements.state;
+  const checkedRadio = document.querySelector('input[name="state"]:checked');
 
-const stateRadios = this.elements.state;
+  const state = checkedRadio ? checkedRadio.value : 'fulfilled';
   
 for (let i = 0; i < stateRadios.length; i++) {
     if (stateRadios[i].checked) {
